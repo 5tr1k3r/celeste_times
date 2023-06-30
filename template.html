@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="index.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+<div class="title-bg">
+    <h1>{{ heading }}</h1>
+</div>
+<div class="container">
+    <div class="section-container">
+        <div>
+            <h3>Time</h3>
+            <table>
+                <tr>
+                    <th>Chapter</th>
+                    <th>Savefile {{ save_id_a }}</th>
+                    <th>Savefile {{ save_id_b }}</th>
+                    <th>Diff.</th>
+                </tr>
+                {% for row in time_rows %}
+                <tr>
+                    <td>{{ row.chapter }}</td>
+                    <td class="{% if row.a_is_better %}better{% endif %}">{{ row.result_a }}</td>
+                    <td class="{% if row.b_is_better %}better{% endif %}">{{ row.result_b }}</td>
+                    <td>{{ row.diff }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div class="section-container">
+        <div>
+            <h3>Deaths</h3>
+            <table>
+                <tr>
+                    <th>Chapter</th>
+                    <th>Savefile {{ save_id_a }}</th>
+                    <th>Savefile {{ save_id_b }}</th>
+                    <th>Diff.</th>
+                </tr>
+                {% for row in death_rows %}
+                <tr>
+                    <td>{{ row.chapter }}</td>
+                    <td class="{% if row.a_is_better %}better{% endif %}">{{ row.result_a }}</td>
+                    <td class="{% if row.b_is_better %}better{% endif %}">{{ row.result_b }}</td>
+                    <td>{{ row.diff }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+<ul>
+    {% for item in items %}
+    <li>{{ item }}</li>
+    {% endfor %}
+</ul>
+</body>
+</html>
