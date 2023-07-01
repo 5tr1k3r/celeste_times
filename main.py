@@ -169,27 +169,42 @@ def generate_results(save_a: SaveFile, save_b: SaveFile):
             "b_is_better": area_a.deaths > area_b.deaths,
         })
 
-    result_a = None if save_a.game_completed else "-"
-    result_b = None if save_b.game_completed else "-"
-    diff = None if save_a.game_completed and save_b.game_completed else "-"
-
-    time_rows.append({
+    time_row = {
         "chapter": "TOTAL TIME",
-        "result_a": result_a or parse_time(save_a.total_time),
-        "result_b": result_b or parse_time(save_b.total_time),
-        "diff": diff or find_diff(save_a.total_time, save_b.total_time),
-        "a_is_better": False if diff else save_a.total_time < save_b.total_time,
-        "b_is_better": False if diff else save_a.total_time > save_b.total_time,
-    })
+        "result_a": parse_time(save_a.total_time),
+        "result_b": parse_time(save_b.total_time),
+        "diff": find_diff(save_a.total_time, save_b.total_time),
+        "a_is_better": save_a.total_time < save_b.total_time,
+        "b_is_better": save_a.total_time > save_b.total_time,
+    }
 
-    death_rows.append({
+    death_row = {
         "chapter": "TOTAL DEATHS",
-        "result_a": result_a or save_a.total_deaths,
-        "result_b": result_b or save_b.total_deaths,
-        "diff": diff or (save_a.total_deaths - save_b.total_deaths),
-        "a_is_better": False if diff else save_a.total_deaths < save_b.total_deaths,
-        "b_is_better": False if diff else save_a.total_deaths > save_b.total_deaths,
-    })
+        "result_a": save_a.total_deaths,
+        "result_b": save_b.total_deaths,
+        "diff": save_a.total_deaths - save_b.total_deaths,
+        "a_is_better": save_a.total_deaths < save_b.total_deaths,
+        "b_is_better": save_a.total_deaths > save_b.total_deaths,
+    }
+
+    if not save_a.game_completed:
+        time_row["result_a"] = "-"
+        death_row["result_a"] = "-"
+
+    if not save_b.game_completed:
+        time_row["result_b"] = "-"
+        death_row["result_b"] = "-"
+
+    if not (save_a.game_completed and save_b.game_completed):
+        time_row["diff"] = "-"
+        time_row["a_is_better"] = False
+        time_row["b_is_better"] = False
+        death_row["diff"] = "-"
+        death_row["a_is_better"] = False
+        death_row["b_is_better"] = False
+
+    time_rows.append(time_row)
+    death_rows.append(death_row)
 
     # Data to populate the template
     data = {
